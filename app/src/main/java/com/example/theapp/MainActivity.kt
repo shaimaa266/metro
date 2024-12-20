@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             "Nasser", "Maspero", "Safaa Hijazy", "Kit Kat", "Sudan", "Imbaba", "El Bohy", "El Qawmia",
             "Ring Road", "Rod El Farag", "Tawfikia", "Wadi El Nile", "Gamet El Dowel", "Boulak El Dakrour"
         )
-        val allStations = (metroStationsLine1 + metroStationsLine2 + metroStationsLine3).distinct()
+        val allStations = arrayOf ("please select ")+(metroStationsLine1 + metroStationsLine2 + metroStationsLine3).distinct()
         val graph = buildMetroGraph(listOf(metroStationsLine1, metroStationsLine2, metroStationsLine3))
         val lines = listOf(metroStationsLine1, metroStationsLine2, metroStationsLine3)
         val spinnerStart = findViewById<Spinner>(R.id.spinnerStart)
