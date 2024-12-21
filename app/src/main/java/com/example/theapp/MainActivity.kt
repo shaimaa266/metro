@@ -2,6 +2,8 @@ package com.example.theapp
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
@@ -50,6 +52,21 @@ class MainActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerStart.adapter = adapter
         spinnerDestination.adapter = adapter
+        buttonRoute.isEnabled = false
+
+        val updateButtonState = {
+            buttonRoute.isEnabled = spinnerStart.selectedItemPosition > 0 &&
+                    spinnerDestination.selectedItemPosition > 0
+
+        }
+        fun createOnItemSelectedListener(action: () -> Unit) = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) = action()
+            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+        }
+
+        spinnerStart.onItemSelectedListener = createOnItemSelectedListener(updateButtonState)
+        spinnerDestination.onItemSelectedListener = createOnItemSelectedListener(updateButtonState)
+
 
         buttonRoute.setOnClickListener {
             val startStation = spinnerStart.selectedItem?.toString()

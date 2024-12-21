@@ -9,29 +9,29 @@
 
     <TextView
         android:id="@+id/timeTextView"
-        android:layout_width="188dp"
-        android:layout_height="54dp"
+        android:layout_width="183dp"
+        android:layout_height="39dp"
         android:text="time"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textViewResult"
         app:layout_constraintTop_toBottomOf="@+id/textViewResult"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.06" />
 
     <Button
         android:id="@+id/buttonRoute"
         android:layout_width="244dp"
         android:layout_height="42dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:enabled="true"
         android:text="find_your_route"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.016"
         app:layout_constraintStart_toStartOf="@+id/spinnerDestination"
         app:layout_constraintTop_toBottomOf="@+id/spinnerDestination"
         tools:ignore="MissingConstraints" />
@@ -52,7 +52,7 @@
         android:id="@+id/spinnerDestination"
         android:layout_width="369dp"
         android:layout_height="55dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="152dp"
         app:layout_constraintStart_toStartOf="@+id/spinnerStart"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
@@ -63,13 +63,13 @@
         android:layout_height="229dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="25dp"
-        android:layout_marginBottom="22dp"
+        android:layout_marginBottom="16dp"
         android:text="route"
         android:textSize="14sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="@+id/buttonRoute"
         app:layout_constraintTop_toBottomOf="@+id/buttonRoute"
         app:layout_constraintVertical_bias="0.0"
@@ -77,11 +77,12 @@
 
     <TextView
         android:id="@+id/priceTextView"
-        android:layout_width="193dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="192dp"
+        android:layout_width="175dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="184dp"
+        android:layout_marginTop="8dp"
         android:text=",price"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="@+id/timeTextView"
         app:layout_constraintTop_toBottomOf="@+id/textViewResult"
@@ -89,16 +90,17 @@
 
     <TextView
         android:id="@+id/directionTextView"
-        android:layout_width="396dp"
-        android:layout_height="197dp"
+        android:layout_width="384dp"
+        android:layout_height="154dp"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
         android:text="@string/direction"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/timeTextView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/priceTextView"
-        app:layout_constraintVertical_bias="0.205"
+        app:layout_constraintVertical_bias="1.0"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -108,11 +110,34 @@
         android:layout_marginStart="66dp"
         android:layout_marginEnd="32dp"
         android:text="welcome to our metro "
-        android:textSize="34sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.222"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="15dp" />
+        tools:layout_editor_absoluteY="-1dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="317dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="16dp"
+        android:text="choose your destination station "
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/spinnerDestination"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerStart" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="choose your start station"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/spinnerStart"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
