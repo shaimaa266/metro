@@ -55,37 +55,49 @@ class MainActivity : AppCompatActivity() {
             val startStation = spinnerStart.selectedItem?.toString()
             val endStation = spinnerDestination.selectedItem?.toString()
 
-            if (startStation != null && endStation != null && startStation != endStation) {
-                val shortestRoute = findShortestPathBFS(graph, startStation, endStation)
-
-                if (shortestRoute.isEmpty()) {
-                    textViewResult.text = "No route found between $startStation and $endStation."
-                    timeTextView.text = ""
-                    priceTextView.text = ""
+            when {
+                startStation == null || endStation == null -> {
+                    textViewResult.text = "Please select start and destination stations."
+                    timeTextView.text = "time :0"
+                    priceTextView.text = "nothing "
                     directionTextView.text = ""
-                } else {
-
-                    val stationCount = shortestRoute.size - 1
-                    val timeTaken = stationCount * 2
-                    val ticketPrice = when (stationCount) {
-                        in 1..9 -> 8
-                        in 10..16 -> 10
-                        in 17..23 -> 15
-                        else -> 20
-                    }
-                    val directions = determineDirections(lines, shortestRoute)
-
-
-                    textViewResult.text = "Route:         ${shortestRoute.joinToString(" -> ")}"
-                    timeTextView.text = "Time: $timeTaken minutes"
-                    priceTextView.text = "Price: $ticketPrice EGP"
-                    directionTextView.text = "Directions: $directions"
+                    buttonRoute.isEnabled = false
                 }
-            } else {
-                textViewResult.text = "Please select valid start and destination stations."
+                startStation == endStation -> {
+                    textViewResult.text = "You are in this station, don't go anywhere!"
+                    timeTextView.text = "time: 0"
+                    priceTextView.text = " ,price: nothing "
+                    directionTextView.text = ""
+                    buttonRoute.isEnabled = true
+                }
+                else -> {
+                    val shortestRoute = findShortestPathBFS(graph, startStation, endStation)
+                    if (shortestRoute.isEmpty()) {
+                        textViewResult.text = "No route found between $startStation and $endStation."
+                        timeTextView.text = ""
+                        priceTextView.text = ""
+                        directionTextView.text = ""
+                    } else {
+                        val stationCount = shortestRoute.size - 1
+                        val timeTaken = stationCount * 2
+                        val ticketPrice = when (stationCount) {
+                            in 1..9 -> 8
+                            in 10..16 -> 10
+                            in 17..23 -> 15
+                            else -> 20
+                        }
+                        val directions = determineDirections(lines, shortestRoute)
+
+                        textViewResult.text = "Route:         ${shortestRoute.joinToString(" -> ")}"
+                        timeTextView.text = "Time: $timeTaken minutes"
+                        priceTextView.text = " ,Price: $ticketPrice EGP"
+                        directionTextView.text = "Directions: $directions"
+                    }
+                    buttonRoute.isEnabled = true // Enable button in all other cases
+                }
             }
-        }
-    }
+        }}
+
 
     private fun buildMetroGraph(lines: List<Array<String>>): Map<String, List<String>> {
         val graph = mutableMapOf<String, MutableList<String>>()

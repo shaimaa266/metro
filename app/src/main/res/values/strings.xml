@@ -3,4 +3,5 @@
     <string name="price">price</string>
     <string name="direction">direction</string>
     <string name="welcome_to_our_metro">welcome to our metro</string>
+    <string name="find_your_route">find your route</string>
 </resources>
