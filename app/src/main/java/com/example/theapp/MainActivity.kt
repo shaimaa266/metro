@@ -11,21 +11,22 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var sharedPreferences: SharedPreferences
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        sharedPreferences = getSharedPreferences("Metro", MODE_PRIVATE)
 
         val metroStationsLine1 = arrayOf(
-                "El Marg Elgadidah", "El Marg", "Ezbet El Nakhl", "Ain Shams", "El Matareyya", "Helmeyet El Zaitoun",
-                "Hadayeq El Zaitoun", "Saray El Qobba", "Hammamat El Qobba", "Kobri El Qobba", "Manshiet El Sadr",
-                "El Demerdash", "Ghamra", "El Shohadaa", "Orabi", "Nasser", "Sadat", "Saad Zaghloul",
-                "El Sayeda Zeinab", "El Malek El Saleh", "Mar Girgis", "El Zahraa", "Dar El Salam",
-                "Hadayeq El Maadi", "Maadi", "Sakanat El Maadi", "Tora El Balad", "Kozzika", "Tora El Asmant",
-                "El Maasara", "Hadayeq Helwan", "Wadi Hof", "Helwan University", "Ain Helwan", "Helwan"
-            )
+            "El Marg Elgadidah", "El Marg", "Ezbet El Nakhl", "Ain Shams", "El Matareyya", "Helmeyet El Zaitoun",
+            "Hadayeq El Zaitoun", "Saray El Qobba", "Hammamat El Qobba", "Kobri El Qobba", "Manshiet El Sadr",
+            "El Demerdash", "Ghamra", "El Shohadaa", "Orabi", "Nasser", "Sadat", "Saad Zaghloul",
+            "El Sayeda Zeinab", "El Malek El Saleh", "Mar Girgis", "El Zahraa", "Dar El Salam",
+            "Hadayeq El Maadi", "Maadi", "Sakanat El Maadi", "Tora El Balad", "Kozzika", "Tora El Asmant",
+            "El Maasara", "Hadayeq Helwan", "Wadi Hof", "Helwan University", "Ain Helwan", "Helwan"
+        )
         val metroStationsLine2 = arrayOf(
             "El Moneeb", "Sakiat Mekki", "Omm El Misryeen", "El Giza", "Faisal", "Cairo University",
             "Bohooth", "Dokki", "Opera", "Sadat", "Mohamed Naguib", "Attaba", "El Shohadaa", "Massara",
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             "Nasser", "Maspero", "Safaa Hijazy", "Kit Kat", "Sudan", "Imbaba", "El Bohy", "El Qawmia",
             "Ring Road", "Rod El Farag", "Tawfikia", "Wadi El Nile", "Gamet El Dowel", "Boulak El Dakrour"
         )
-        val allStations = arrayOf ("please select ")+(metroStationsLine1 + metroStationsLine2 + metroStationsLine3).distinct()
+        val allStations = arrayOf("please select ") + (metroStationsLine1 + metroStationsLine2 + metroStationsLine3).distinct()
         val graph = buildMetroGraph(listOf(metroStationsLine1, metroStationsLine2, metroStationsLine3))
         val lines = listOf(metroStationsLine1, metroStationsLine2, metroStationsLine3)
         val spinnerStart = findViewById<Spinner>(R.id.spinnerStart)
@@ -57,7 +58,6 @@ class MainActivity : AppCompatActivity() {
         val updateButtonState = {
             buttonRoute.isEnabled = spinnerStart.selectedItemPosition > 0 &&
                     spinnerDestination.selectedItemPosition > 0
-
         }
         fun createOnItemSelectedListener(action: () -> Unit) = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) = action()
@@ -75,15 +75,15 @@ class MainActivity : AppCompatActivity() {
             when {
                 startStation == null || endStation == null -> {
                     textViewResult.text = "Please select start and destination stations."
-                    timeTextView.text = "time :0"
-                    priceTextView.text = "nothing "
+                    timeTextView.text = "Time: 0"
+                    priceTextView.text = "Price: nothing"
                     directionTextView.text = ""
                     buttonRoute.isEnabled = false
                 }
                 startStation == endStation -> {
                     textViewResult.text = "You are in this station, don't go anywhere!"
-                    timeTextView.text = "time: 0"
-                    priceTextView.text = " ,price: nothing "
+                    timeTextView.text = "Time: 0"
+                    priceTextView.text = "Price: nothing"
                     directionTextView.text = ""
                     buttonRoute.isEnabled = true
                 }
@@ -107,14 +107,17 @@ class MainActivity : AppCompatActivity() {
 
                         textViewResult.text = "Route:         ${shortestRoute.joinToString(" -> ")}"
                         timeTextView.text = "Time: $timeTaken minutes"
-                        priceTextView.text = " ,Price: $ticketPrice EGP"
+                        priceTextView.text = "Price: $ticketPrice EGP"
                         directionTextView.text = "Directions: $directions"
+
+
+                        saveRouteToPreferences(startStation, endStation, shortestRoute, directions, timeTaken, ticketPrice)
                     }
-                    buttonRoute.isEnabled = true // Enable button in all other cases
+                    buttonRoute.isEnabled = true
                 }
             }
-        }}
-
+        }
+    }
 
     private fun buildMetroGraph(lines: List<Array<String>>): Map<String, List<String>> {
         val graph = mutableMapOf<String, MutableList<String>>()
@@ -127,6 +130,7 @@ class MainActivity : AppCompatActivity() {
         }
         return graph
     }
+
     private fun findShortestPathBFS(graph: Map<String, List<String>>, start: String, end: String): List<String> {
         val queue = ArrayDeque<List<String>>()
         val visited = mutableSetOf<String>()
@@ -145,6 +149,7 @@ class MainActivity : AppCompatActivity() {
         }
         return emptyList()
     }
+
     private fun determineDirections(lines: List<Array<String>>, route: List<String>): String {
         val steps = mutableListOf<String>()
 
@@ -175,4 +180,16 @@ class MainActivity : AppCompatActivity() {
         return steps.joinToString("\n")
     }
 
+
+    private fun saveRouteToPreferences(startStation: String?, endStation: String?, route: List<String>, directions: String, time: Int, price: Int) {
+        val editor = sharedPreferences.edit()
+        editor.putString("start_station", startStation)
+        editor.putString("end_station", endStation)
+        editor.putString("route", route.joinToString(" -> "))
+        editor.putString("directions", directions)
+        editor.putInt("time", time)
+        editor.putInt("price", price)
+        editor.apply()
+    }
 }
+
